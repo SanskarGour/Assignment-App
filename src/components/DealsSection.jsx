@@ -14,31 +14,6 @@ const DealsSection = () => {
   const [toDate, setToDate] = useState("");
   const [activeDealsOnly, setActiveDealsOnly] = useState(false);
 
-  // Function to get background color for each stage based on name and index
-  const getStageBackgroundColor = (stageName, index) => {
-    // Special handling for Negotiating stages based on position
-    if (stageName === "Negotiating") {
-      // First Negotiating (index 0) - light pink
-      if (index === 0) return "bg-pink-50";
-      // Second Negotiating (index 2) - light green (the one below Kickedback)
-      if (index === 2) return "bg-green-50";
-      // Third Negotiating (index 3) - light blue
-      if (index === 3) return "bg-blue-50";
-      // Default for any other Negotiating
-      return "bg-blue-50";
-    }
-
-    const colorMap = {
-      Kickedback: "bg-yellow-50",
-      Proposal: "bg-blue-50",
-      "Closed Won": "bg-green-100",
-      "Closed Lost": "bg-red-50",
-      Qualified: "bg-purple-50",
-      Discovery: "bg-indigo-50",
-    };
-    return colorMap[stageName] || "bg-gray-50";
-  };
-
   const toggleStage = (stageName) => {
     setExpandedStages((prev) => ({
       ...prev,
@@ -50,8 +25,7 @@ const DealsSection = () => {
     setSearchTerm("");
     setFromDate("");
     setToDate("");
-    setActiveDealsOnly(true); // Reset to default: show only active deals
-    // Reset expanded stages to default (only first stage expanded)
+    setActiveDealsOnly(true);
     setExpandedStages({ Negotiating0: true });
   };
 
@@ -257,10 +231,7 @@ const DealsSection = () => {
               >
                 <button
                   onClick={() => toggleStage(stage.name + index)}
-                  className={`w-full px-4 py-3 border-b border-gray-200/60 flex items-center justify-between transition-all duration-300 ${getStageBackgroundColor(
-                    stage.name,
-                    index
-                  )} hover:opacity-90 hover:shadow-sm group`}
+                  className={`w-full px-4 py-3 border-b border-gray-200/60 flex items-center justify-between transition-all duration-300 $ hover:opacity-90 hover:shadow-sm group`}
                 >
                   <div className="flex items-center">
                     {expandedStages[stage.name + index] ? (
@@ -359,66 +330,7 @@ const DealsSection = () => {
             ))}
           </div>
         ) : (
-          <div className="pipeline-view">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredStages.map((stage, index) => (
-                <div
-                  key={index}
-                  className={`${getStageBackgroundColor(
-                    stage.name,
-                    index
-                  )} rounded-lg p-4 border border-gray-200`}
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-medium text-gray-900">{stage.name}</h3>
-                    <span className="text-sm text-gray-500">
-                      {stage.count} deals
-                    </span>
-                  </div>
-                  <div className="text-2xl font-bold text-gray-900 mb-4">
-                    ${stage.totalValue.toLocaleString()}
-                  </div>
-                  <div className="space-y-2">
-                    {stage.deals.map((deal) => (
-                      <div
-                        key={deal.id}
-                        className="bg-white rounded-lg p-3 border border-gray-200 hover:shadow-sm transition-shadow"
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center">
-                            <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center mr-2">
-                              <span className="text-white font-medium text-xs">
-                                {deal.client.initials}
-                              </span>
-                            </div>
-                            <span className="text-sm font-medium text-gray-900">
-                              {deal.client.name}
-                            </span>
-                          </div>
-                          <span className="text-sm font-bold text-gray-900">
-                            ${deal.dealBudget.toLocaleString()}
-                          </span>
-                        </div>
-                        <div className="text-xs text-gray-600 mb-1">
-                          {deal.dealName}
-                        </div>
-                        <div className="flex items-center">
-                          <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center mr-1">
-                            <span className="text-white font-medium text-xs">
-                              {deal.assignee.initials}
-                            </span>
-                          </div>
-                          <span className="text-xs text-gray-600">
-                            {deal.assignee.name}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <div className="text-gray-500">Pipeline view coming soon...</div>
         )}
       </div>
     </div>
