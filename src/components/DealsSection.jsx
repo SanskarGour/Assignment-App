@@ -7,7 +7,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 
 const DealsSection = () => {
   const [activeTab, setActiveTab] = useState("My Deals");
-  const [viewMode, setViewMode] = useState("list"); // 'pipeline' or 'list'
+  const [viewMode, setViewMode] = useState("list");
   const [expandedStages, setExpandedStages] = useState({ Negotiating0: true });
   const [searchTerm, setSearchTerm] = useState("");
   const [fromDate, setFromDate] = useState("");
@@ -29,7 +29,6 @@ const DealsSection = () => {
     setExpandedStages({ Negotiating0: true });
   };
 
-  // Filter deals based on search term, active deals filter, and date range
   const filteredStages = useMemo(() => {
     return pipelineStages.map((stage) => {
       const filteredDeals = stage.deals.filter((deal) => {
@@ -39,14 +38,11 @@ const DealsSection = () => {
           deal.dealName.toLowerCase().includes(searchTerm.toLowerCase()) ||
           deal.assignee.name.toLowerCase().includes(searchTerm.toLowerCase());
 
-        // Active deals logic: if checkbox is checked, only show deals with status 'active'
-        // If unchecked, show all deals regardless of status
         const matchesActive = !activeDealsOnly || deal.status === "active";
 
-        // Date filtering logic
         let matchesDate = true;
         if (fromDate || toDate) {
-          const dealDate = new Date(deal.createdDate || "2024-01-01"); // Default date if not set
+          const dealDate = new Date(deal.createdDate || "2024-01-01"); 
           const from = fromDate ? new Date(fromDate) : null;
           const to = toDate ? new Date(toDate) : null;
 
@@ -57,7 +53,6 @@ const DealsSection = () => {
         return matchesSearch && matchesActive && matchesDate;
       });
 
-      // Calculate totals for filtered deals
       const totalValue = filteredDeals.reduce(
         (sum, deal) => sum + deal.dealBudget,
         0
@@ -73,7 +68,6 @@ const DealsSection = () => {
     });
   }, [searchTerm, activeDealsOnly, fromDate, toDate]);
 
-  // Calculate filtered stats
   const filteredStats = useMemo(() => {
     const allFilteredDeals = filteredStages.flatMap((stage) => stage.deals);
     return {
@@ -87,7 +81,6 @@ const DealsSection = () => {
 
   return (
     <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/60 mx-6 mb-6 overflow-hidden">
-      {/* Tabs */}
       <div className="border-b border-gray-200/60">
         <div className="flex">
           <button
@@ -113,12 +106,9 @@ const DealsSection = () => {
         </div>
       </div>
 
-      {/* Summary and Controls */}
       <div className="p-6 border-b border-gray-200">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          {/* Left side - View toggle and summary */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            {/* View Mode Toggle */}
             <div className="flex bg-gray-100/80 rounded-xl p-1.5 shadow-inner">
               <button
                 onClick={() => setViewMode("pipeline")}
@@ -142,7 +132,6 @@ const DealsSection = () => {
               </button>
             </div>
 
-            {/* Summary */}
             <div className="text-sm text-gray-600">
               <span className="font-semibold text-gray-900">
                 {filteredStats.totalDeals}
@@ -162,9 +151,7 @@ const DealsSection = () => {
             </div>
           </div>
 
-          {/* Right side - Search and Filters */}
           <div className="flex flex-col sm:flex-row gap-4">
-            {/* Search */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <IoMdSearch />
@@ -178,7 +165,6 @@ const DealsSection = () => {
               />
             </div>
 
-            {/* Date Range */}
             <div className="flex gap-2">
               <input
                 type="date"
@@ -196,7 +182,6 @@ const DealsSection = () => {
               />
             </div>
 
-            {/* Active Deals Checkbox */}
             <label className="flex items-center px-3 py-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
               <input
                 type="checkbox"
@@ -209,7 +194,6 @@ const DealsSection = () => {
               </span>
             </label>
 
-            {/* Clear Button */}
             <button
               onClick={clearFilters}
               className="flex justify-center items-center  gap-1 px-2 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
@@ -220,7 +204,6 @@ const DealsSection = () => {
         </div>
       </div>
 
-      {/* Pipeline/List Content */}
       <div className="p-6">
         {viewMode === "list" ? (
           <div className="space-y-4">
